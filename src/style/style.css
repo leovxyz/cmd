@@ -12,13 +12,14 @@ body{
     justify-content: center;
     align-items: center;
     height: 100vh;
+    font-family: 'Inter', sans-serif;
 }
 
 .command-menu-button{
     background-color: #1a1a1a;
     border: none;
-    color: #fff;
-    padding: .85rem;
+    color: #b3b1b1;
+    padding: .75rem .85rem;
     cursor: pointer;
     z-index: 10;
     border-radius: 8px;
@@ -51,7 +52,7 @@ main{
     left: 50%;
     transform: translate(-50%, -50%);
     width: clamp(300px, 45%, 650px);
-    height: 24rem;
+    max-height: 24rem;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
@@ -59,6 +60,7 @@ main{
     display: none;
     box-shadow: 0px 0px 30px 10px #11111166;
 }
+
 #search{
     height: 100%;
     width: 100%;
@@ -88,6 +90,9 @@ main{
     background-color: transparent;
     color: #fff;
     caret-color: #fff;
+    font-size: .9rem;
+    font-weight: 400;
+    font-family: 'Inter', sans-serif;
 }
 
 .lower{
@@ -102,38 +107,45 @@ main{
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 3rem;
-    background: linear-gradient(to bottom, transparent, #1a1919);
+    height: 4rem;
+    background: linear-gradient(to bottom, transparent, #1a1a1a);
     pointer-events: none;
     border-radius: 0px 0px 8px 8px;
+    display: block;
 }
 
 .card{
     /* background-color: #13306bbb; */
     border-radius: 6px;
-    padding: .7rem;
+    padding: .6rem;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
     gap: .5rem;
     color: #aaaaab;
-    transition: all .1s ease-in-out;
+    /* transition: all .1s ease-in-out; */
+}
+
+.card .header{
+    font-size: .925rem;
+    pointer-events: none;
 }
 
 .card .population{
     display: none;
 }
 
-.card:hover{
+.hover{
     background-color: #232323;
+    color: #fff;
 }
 .user-cards{
     overflow-y: auto;
-    height: calc(100% - 3.2rem);
+    /* height: calc(100% - 3.2rem); */
+    max-height: 20rem;
     display: flex;
     flex-direction: column;
     /* gap: .75rem; */
-    
 }
 
 .hide {
