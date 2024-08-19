@@ -4,7 +4,6 @@ const searchInput = document.querySelector("[data-search]")
 const commandMenu = document.querySelector("[data-command-menu]")
 const main = document.querySelector("main")
 const button = document.querySelector("[command-menu-button]")
-
 let users = []
 
 searchInput.addEventListener("input", e => {

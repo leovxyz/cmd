@@ -59,16 +59,6 @@ main{
     display: none;
 }
 
-/* @media screen and (max-width: 968px) {
-    .command{
-        width: 55%;
-    }
-    @media screen and (max-width: 648px) {
-        .command{
-            width: 90%;
-        }
-    }
-} */
 .upper{
     position: fixed;
     width: 100%;
