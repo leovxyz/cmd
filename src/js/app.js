@@ -1,3 +1,4 @@
+// Global variables and DOM element selections
 const userCardTemplate = document.querySelector("[data-user-template]")
 const userCardContainer = document.querySelector("[data-user-cards-container]")
 const searchInput = document.querySelector("[data-search]")
@@ -9,7 +10,9 @@ const card = document.querySelector(".card")
 let users = []
 let currentIndex = 0;
 
+// Search input event listener
 searchInput.addEventListener("input", e => {
+  // Filter and display cards based on search input
   const value = e.target.value.toLowerCase()
   users.forEach(user => {
     const isVisible =
@@ -19,7 +22,7 @@ searchInput.addEventListener("input", e => {
   initializeCardNavigation(); // Reinitialize card navigation after filtering
 })
 
-// Fetches data from the API
+// Fetch data from API and create cards
 fetch("https://freetestapi.com/api/v1/countries")
   .then(res => res.json()) 
   .then(data => { 
@@ -28,18 +31,22 @@ fetch("https://freetestapi.com/api/v1/countries")
     initializeCardNavigation();
   })
 
+// Card click event listener
 userCardContainer.addEventListener("click", (event) => {
+  // Display alert with card information when clicked
   const clickedCard = event.target.closest("[data-card]");
   if (clickedCard) {
     alert(clickedCard.querySelector("[data-header]").textContent + " has a population of approximately " + clickedCard.querySelector("[data-population]").textContent + " people")
   }
 });
 
+// Keyboard shortcut event listener
 document.addEventListener("keydown", (event) => {
+  // Handle Cmd/Ctrl + K and Escape key events
   const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
   if ((isMac ? event.metaKey : event.ctrlKey) && event.key === "k") {
     event.preventDefault();
-    // console.log("Command/Ctrl + K pressed");
+    // Toggle command menu visibility
     if (commandMenu.style.display === "none" || commandMenu.style.display === "") {
       commandMenu.style.display = "block";
       button.style.display = "none";
@@ -51,6 +58,7 @@ document.addEventListener("keydown", (event) => {
     }
   }
   if (event.key === "Escape") {
+    // Hide command menu on Escape key press
     commandMenu.style.display = "none";
     searchInput.value = "";
     button.style.display = "block";
@@ -58,7 +66,9 @@ document.addEventListener("keydown", (event) => {
   
 })
 
+// Click event listener to hide command menu
 document.addEventListener("click", (event) => {
+  // Hide command menu when clicking outside
   if (event.target === main) {
     commandMenu.style.display = "none";
     searchInput.value = "";
@@ -66,17 +76,19 @@ document.addEventListener("click", (event) => {
   }
 })
 
+// Button click event listener
 button.addEventListener("click", (event) => {
+    // Show command menu and focus on search input
     commandMenu.style.display = "block";
     button.style.display = "none";
     searchInput.focus();
 })
 
-// Hide the bottom gradient when the command menu is below(340px)
-
+// Resize observer for bottom gradient
 const thresholdHeight = 340; //Threshold height
 
 const resizeObserver = new ResizeObserver(entries => {
+    // Toggle bottom gradient visibility based on command menu height
     for (let entry of entries) {
         const currentHeight = entry.contentRect.height;
 
@@ -93,11 +105,14 @@ const resizeObserver = new ResizeObserver(entries => {
 
 resizeObserver.observe(commandMenu);
 
+// Helper functions
 function clearCards() {
+  // Clear all cards from the container
   userCardContainer.innerHTML = '';
 }
 
 function createCard(user) {
+  // Create and append a new card element
   const card = userCardTemplate.content.cloneNode(true).children[0]
   const header = card.querySelector("[data-header]")
   const population = card.querySelector("[data-population]")
@@ -108,10 +123,12 @@ function createCard(user) {
 }
 
 function getVisibleCards() {
+  // Get all visible (non-hidden) cards
   return Array.from(document.querySelectorAll('.card:not(.hide)'));
 }
 
 function initializeCardNavigation() {
+  // Initialize card navigation with the first visible card
   const visibleCards = getVisibleCards();
   if (visibleCards.length > 0) {
     currentIndex = 0;
@@ -120,6 +137,7 @@ function initializeCardNavigation() {
 }
 
 function updateHoverState(newIndex) {
+  // Update the hover state of cards
   const visibleCards = getVisibleCards();
   if (visibleCards.length === 0) return;
 
@@ -129,7 +147,9 @@ function updateHoverState(newIndex) {
   visibleCards[currentIndex].scrollIntoView({ block: 'nearest' });
 }
 
+// Keyboard navigation event listener
 document.addEventListener('keydown', function(event) {
+  // Handle arrow key navigation and Enter key selection
   const visibleCards = getVisibleCards();
   if (visibleCards.length === 0) return;
 
@@ -149,7 +169,9 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
+// Mouse hover event listener
 document.addEventListener('mouseover', (event) => {
+  // Update hover state when mouse moves over a card
   const cardElement = event.target.closest('.card:not(.hide)');
   if (cardElement) {
     const visibleCards = getVisibleCards();
