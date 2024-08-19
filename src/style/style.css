@@ -28,7 +28,7 @@ body{
 
 .command-menu-button:hover{
     background-color: #232323;
-    box-shadow: 0px 0px 15px 0px #aaaaab66;
+    box-shadow: 0px 0px 20px 1px #4d4d4d66;
     border-radius: 12px;
 }
 
@@ -57,6 +57,7 @@ main{
     flex-direction: column;
     border: 1px solid #aaaaab4a;
     display: none;
+    box-shadow: 0px 0px 30px 10px #11111166;
 }
 #search{
     height: 100%;
