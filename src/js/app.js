@@ -56,12 +56,14 @@ document.addEventListener("keydown", (event) => {
       searchInput.value = "";
       button.style.display = "block";
     }
+    searchInput.focus(); // Always focus on searchInput
   }
   if (event.key === "Escape") {
     // Hide command menu on Escape key press
     commandMenu.style.display = "none";
     searchInput.value = "";
     button.style.display = "block";
+    searchInput.focus();
   }
   
 })
@@ -73,6 +75,7 @@ document.addEventListener("click", (event) => {
     commandMenu.style.display = "none";
     searchInput.value = "";
     button.style.display = "block";
+    searchInput.focus();
   }
 })
 
@@ -161,12 +164,14 @@ document.addEventListener('keydown', function(event) {
       newIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
     }
     updateHoverState(newIndex);
+    event.preventDefault(); // Prevent default scrolling behavior
   } else if (event.key === 'Enter') {
     const hoveredCard = visibleCards[currentIndex];
     if (hoveredCard) {
       alert(hoveredCard.querySelector("[data-header]").textContent + " has a population of approximately " + hoveredCard.querySelector("[data-population]").textContent + " people");
     }
   }
+  searchInput.focus(); // Always focus on searchInput after any key press
 });
 
 // Mouse hover event listener
