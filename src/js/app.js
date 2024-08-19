@@ -2,9 +2,10 @@ const userCardTemplate = document.querySelector("[data-user-template]")
 const userCardContainer = document.querySelector("[data-user-cards-container]")
 const searchInput = document.querySelector("[data-search]")
 const commandMenu = document.querySelector("[data-command-menu]")
+const bottomGradient = document.querySelector("[data-bottom-gradient]")
 const main = document.querySelector("main")
 const button = document.querySelector("[command-menu-button]")
-const search = document.querySelector("[data-search]")
+const card = document.querySelector(".card")
 let users = []
 
 searchInput.addEventListener("input", e => {
@@ -26,6 +27,7 @@ fetch("https://freetestapi.com/api/v1/countries")
       const population = card.querySelector("[data-population]")
       header.textContent = user.name 
       population.textContent = user.population
+    //   card.style.backgroundColor = "red";
       userCardContainer.append(card) 
       return { name: user.name, element: card } 
     })
@@ -47,14 +49,16 @@ document.addEventListener("keydown", (event) => {
     if (commandMenu.style.display === "none" || commandMenu.style.display === "") {
       commandMenu.style.display = "block";
       button.style.display = "none";
-      search.focus(); // Add this line to focus the search input
+      searchInput.focus();
     } else {
       commandMenu.style.display = "none";
+      searchInput.value = "";
       button.style.display = "block";
     }
   }
   if (event.key === "Escape") {
     commandMenu.style.display = "none";
+    searchInput.value = "";
     button.style.display = "block";
   }
   
@@ -63,6 +67,7 @@ document.addEventListener("keydown", (event) => {
 document.addEventListener("click", (event) => {
   if (event.target === main) {
     commandMenu.style.display = "none";
+    searchInput.value = "";
     button.style.display = "block";
   }
 })
@@ -70,5 +75,39 @@ document.addEventListener("click", (event) => {
 button.addEventListener("click", (event) => {
     commandMenu.style.display = "block";
     button.style.display = "none";
-    search.focus(); // Add this line to focus the search input
+    searchInput.focus();
 })
+
+
+document.addEventListener("mouseover", (event) => {
+  if (event.target.classList.contains("card")) {
+        event.target.classList.toggle("hover")
+         }
+})
+
+document.addEventListener("mouseout", (event) => {
+  if (event.target.classList.contains("card")) {
+    event.target.classList.toggle("hover")  }
+})
+
+
+// Hide the bottom gradient when the command menu is below(340px)
+
+const thresholdHeight = 340; //Threshold height
+
+const resizeObserver = new ResizeObserver(entries => {
+    for (let entry of entries) {
+        const currentHeight = entry.contentRect.height;
+
+        if (currentHeight < thresholdHeight) {
+            // console.log('The command menu height is below 250px.');
+            bottomGradient.style.display = "none";
+        }
+        else {
+            // console.log('The command menu height is above 250px.');
+            bottomGradient.style.display = "block";
+        }
+    }
+});
+
+resizeObserver.observe(commandMenu);
