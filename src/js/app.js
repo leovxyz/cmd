@@ -81,11 +81,11 @@ const resizeObserver = new ResizeObserver(entries => {
         const currentHeight = entry.contentRect.height;
 
         if (currentHeight < thresholdHeight) {
-            // console.log('The command menu height is below 250px.');
+            // console.log('The command menu height is below 340px.');
             bottomGradient.style.display = "none";
         }
         else {
-            // console.log('The command menu height is above 250px.');
+            // console.log('The command menu height is above 340px.');
             bottomGradient.style.display = "block";
         }
     }
