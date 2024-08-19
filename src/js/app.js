@@ -44,7 +44,7 @@ document.addEventListener("keydown", (event) => {
   const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
   if ((isMac ? event.metaKey : event.ctrlKey) && event.key === "k") {
     event.preventDefault();
-    console.log("Command/Ctrl + K pressed");
+    // console.log("Command/Ctrl + K pressed");
 
     if (commandMenu.style.display === "none" || commandMenu.style.display === "") {
       commandMenu.style.display = "block";
@@ -82,13 +82,22 @@ button.addEventListener("click", (event) => {
 document.addEventListener("mouseover", (event) => {
   if (event.target.classList.contains("card")) {
         event.target.classList.toggle("hover")
-         }
+    }
 })
 
 document.addEventListener("mouseout", (event) => {
   if (event.target.classList.contains("card")) {
     event.target.classList.toggle("hover")  }
 })
+
+document.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    const hoveredCard = document.querySelector(".card.hover");
+    if (hoveredCard) {
+        alert(hoveredCard.querySelector("[data-header]").textContent + " has a population of approximately " + hoveredCard.querySelector("[data-population]").textContent + " people")
+    }
+  }
+});
 
 
 // Hide the bottom gradient when the command menu is below(340px)
@@ -111,3 +120,16 @@ const resizeObserver = new ResizeObserver(entries => {
 });
 
 resizeObserver.observe(commandMenu);
+
+document.addEventListener('keydown', function(event) {
+    const containerArrowScroll = document.querySelector("[data-user-cards-container]");
+    
+    // Check which key is pressed
+    if (event.key === 'ArrowDown') {
+        // Scroll down by a certain amount (e.g., 20 pixels)
+        containerArrowScroll.scrollBy(0, 20);
+    } else if (event.key === 'ArrowUp') {
+        // Scroll up by a certain amount (e.g., 20 pixels)
+        containerArrowScroll.scrollBy(0, -20);
+    }
+});
