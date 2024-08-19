@@ -4,6 +4,7 @@ const searchInput = document.querySelector("[data-search]")
 const commandMenu = document.querySelector("[data-command-menu]")
 const main = document.querySelector("main")
 const button = document.querySelector("[command-menu-button]")
+const search = document.querySelector("[data-search]")
 let users = []
 
 searchInput.addEventListener("input", e => {
@@ -46,7 +47,7 @@ document.addEventListener("keydown", (event) => {
     if (commandMenu.style.display === "none" || commandMenu.style.display === "") {
       commandMenu.style.display = "block";
       button.style.display = "none";
-
+      search.focus(); // Add this line to focus the search input
     } else {
       commandMenu.style.display = "none";
       button.style.display = "block";
@@ -69,4 +70,5 @@ document.addEventListener("click", (event) => {
 button.addEventListener("click", (event) => {
     commandMenu.style.display = "block";
     button.style.display = "none";
+    search.focus(); // Add this line to focus the search input
 })
