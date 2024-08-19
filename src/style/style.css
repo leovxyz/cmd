@@ -58,16 +58,23 @@ main{
     border: 1px solid #aaaaab4a;
     display: none;
 }
-
+#search{
+    height: 100%;
+    width: 100%;
+}
+.search-wrapper{
+    height: 100%;
+    width: 100%;
+}
 .upper{
     position: fixed;
     width: 100%;
-    height: 3rem;
+    height: 3.2rem;
     /* border: 1px solid red; */
     display: flex;
     flex-direction: column;
     gap: .25rem;
-    padding: 1rem;
+    padding: .3rem 1rem;
     border-radius: 8px 8px 0px 0px;
     border-bottom: 1px solid #aaaaab4a;
 }
@@ -83,16 +90,27 @@ main{
 }
 
 .lower{
-    margin-top: 3rem;
+    margin-top: 3.2rem;
     /* background-color: aqua; */
     height: 100%;
     padding: .7rem;
 }
 
+.lower .gradient{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3rem;
+    background: linear-gradient(to bottom, transparent, #1a1919);
+    pointer-events: none;
+    border-radius: 0px 0px 8px 8px;
+}
+
 .card{
     /* background-color: #13306bbb; */
     border-radius: 6px;
-    padding: .8rem;
+    padding: .7rem;
     cursor: pointer;
     display: flex;
     justify-content: space-between;
@@ -110,7 +128,7 @@ main{
 }
 .user-cards{
     overflow-y: auto;
-    height: calc(100% - 3rem);
+    height: calc(100% - 3.2rem);
     display: flex;
     flex-direction: column;
     /* gap: .75rem; */
