@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="src/style/style.css">
+</head>
+<body>
+    <button class="command-menu-button" command-menu-button>⌘</button>
+    <main>
+    <div class="command" data-command-menu>
+        <div class="upper">
+            <div class="search-wrapper">
+                <input type="search" id="search" data-search autofocus autocomplete="off">
+            </div>
+        </div>
+            <div class="lower">
+                <div class="user-cards" data-user-cards-container></div>
+                <template data-user-template>
+                    <div class="card" data-card>
+                        <div class="header" data-header></div>
+                        <div class="population" data-population></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+    </main>
+    <script src="src/js/app.js"></script>
+</body>
+</html>
