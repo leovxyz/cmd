@@ -46,12 +46,11 @@ countryCardContainer.addEventListener("click", (event) => {
   }
 });
 
-// let scrollableList = countryCardContainer;
 
-const thresholdHeight = 340; //Threshold height
 
 const resizeObserver = new ResizeObserver((entries) => { 
   // Toggle bottom gradient visibility based on command menu height
+  const thresholdHeight = 340; //Threshold height
   for (let entry of entries) {
     const currentHeight = entry.contentRect.height;
 
