@@ -1,5 +1,2 @@
 # command-menu
- A command menu featuring 199 countries/items fetched from the Free Test API (https://freetestapi.com/api/v1/countries). The menu includes a fully functional search input that allows users to filter countries in real-time.
-
- - Displays country names and populations (199 items)
- - Keyboard shortcut - (Ctrl+K or Cmd+K) to toggle the command menu + (esc) to close it
+A command menu featuring 199 items fetched from the Free Test Country API (https://freetestapi.com/api/v1/countries). The menu includes a fully functional search input that allows users to filter countries in real-time. It also supports keyboard shortcuts: Ctrl+K or Cmd+K to toggle the command menu (open and close it), and Esc to close it. Additionally, clicking outside the menu will close it. When an item is clicked, the country's name and population will be displayed in an alert box.
