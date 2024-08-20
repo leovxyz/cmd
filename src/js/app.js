@@ -159,7 +159,7 @@ scrollableList.addEventListener("scroll", (event) => {
   let scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
 
   // 99.9 is the absoulute bottom of the scrollable list, so we want to hide the gradient when we get close to the bottom.
-  if (scrollPercent >= 99.9) {
+  if (scrollPercent >= 99) {
     bottomGradient.style.display = "none";
   } else {
     bottomGradient.style.display = "block";
