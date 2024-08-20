@@ -52,14 +52,20 @@ main{
     top: 40%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: clamp(300px, 45%, 650px);
-    max-height: 24rem;
+    width: clamp(600px, 45%, 630px);
+    max-height: 22rem;
     border-radius: 8px;
     display: flex;
     flex-direction: column;
     border: 1px solid #aaaaab4a;
     display: none;
     box-shadow: 0px 0px 30px 10px #11111166;
+}
+
+@media (max-width: 730px){
+    .command{
+        width: 85%;
+    }
 }
 
 #search{
@@ -141,7 +147,7 @@ main{
 }
 .country-cards{
     overflow-y: auto;
-    max-height: 20rem;
+    max-height: 18rem;
     display: flex;
     flex-direction: column;
     padding-bottom: .65rem;
