@@ -35,7 +35,7 @@ fetch("https://freetestapi.com/api/v1/countries")
 // Card click event listener
 countryCardContainer.addEventListener("click", (event) => {
   // Display alert with card information when clicked
-  const clickedCard = event.target.closest("[data-card]");
+  const clickedCard = event.target.closest("[data-country-card]");
   if (clickedCard) {
     alert(
       clickedCard.querySelector("[data-header]").textContent +
@@ -45,7 +45,6 @@ countryCardContainer.addEventListener("click", (event) => {
     );
   }
 });
-
 
 
 const resizeObserver = new ResizeObserver((entries) => { 
