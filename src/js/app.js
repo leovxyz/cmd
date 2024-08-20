@@ -1,6 +1,8 @@
 // Global variables and DOM element selections
 const countryCardTemplate = document.querySelector("[data-country-template]");
-const countryCardContainer = document.querySelector("[data-country-cards-container]");
+const countryCardContainer = document.querySelector(
+  "[data-country-cards-container]"
+);
 const searchInput = document.querySelector("[data-search]");
 const commandMenu = document.querySelector("[data-command-menu]");
 const bottomGradient = document.querySelector("[data-bottom-gradient]");
@@ -44,7 +46,24 @@ countryCardContainer.addEventListener("click", (event) => {
   }
 });
 
-// Keyboard shortcut event listener
+let scrollableList = countryCardContainer;
+
+scrollableList.addEventListener("scroll", (event) => {
+  let scrollTop = scrollableList.scrollTop;
+  let scrollHeight = scrollableList.scrollHeight;
+  let clientHeight = scrollableList.clientHeight;
+
+  // Calculate the percentage of the scroll ( current position / total scrollable content)
+  let scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+
+  // 99.9 is the absoulute bottom of the scrollable list, so we want to hide the gradient when we get close to the bottom.
+  if (scrollPercent >= 99.9) {
+    bottomGradient.style.display = "none";
+  } else {
+    bottomGradient.style.display = "block";
+  }
+});
+
 document.addEventListener("keydown", (event) => {
   // Handle Cmd/Ctrl + K and Escape key events
   const isMac = /Mac|iPod|iPhone|iPad/.test(navigator.platform);
@@ -76,7 +95,6 @@ document.addEventListener("keydown", (event) => {
 
 // Click event listener to hide command menu
 document.addEventListener("click", (event) => {
-  // Hide command menu when clicking outside
   if (event.target === main) {
     commandMenu.style.display = "none";
     searchInput.value = "";
@@ -85,7 +103,6 @@ document.addEventListener("click", (event) => {
   }
 });
 
-// Button click event listener
 button.addEventListener("click", (event) => {
   // Show command menu and focus on search input
   commandMenu.style.display = "block";
@@ -93,10 +110,9 @@ button.addEventListener("click", (event) => {
   searchInput.focus();
 });
 
-// Resize observer for bottom gradient
 const thresholdHeight = 340; //Threshold height
 
-const resizeObserver = new ResizeObserver((entries) => {
+const resizeObserver = new ResizeObserver((entries) => { 
   // Toggle bottom gradient visibility based on command menu height
   for (let entry of entries) {
     const currentHeight = entry.contentRect.height;
