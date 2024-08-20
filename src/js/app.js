@@ -129,7 +129,7 @@ const resizeObserver = new ResizeObserver((entries) => {
 
 resizeObserver.observe(commandMenu);
 
-// Helper functions
+
 function clearCards() {
   // Clear all cards from the container
   countryCardContainer.innerHTML = "";
@@ -200,7 +200,7 @@ document.addEventListener("keydown", function (event) {
   searchInput.focus(); // Always focus on searchInput after any key press
 });
 
-// Mouse hover event listener
+
 document.addEventListener("mouseover", (event) => {
   // Update hover state when mouse moves over a card
   const cardElement = event.target.closest(".country-card:not(.hide)");
