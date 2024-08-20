@@ -1,14 +1,14 @@
 // Global variables and DOM element selections
 const countryCardTemplate = document.querySelector("[data-country-template]");
-const countryCardContainer = document.querySelector(
-  "[data-country-cards-container]"
-);
+const countryCardContainer = document.querySelector("[data-country-cards-container]");
 const searchInput = document.querySelector("[data-search]");
 const commandMenu = document.querySelector("[data-command-menu]");
 const bottomGradient = document.querySelector("[data-bottom-gradient]");
 const main = document.querySelector("main");
 const button = document.querySelector("[command-menu-button]");
 const card = document.querySelector(".country-card");
+
+let scrollableList = countryCardContainer;
 let countries = [];
 let currentIndex = 0;
 
@@ -46,7 +46,110 @@ countryCardContainer.addEventListener("click", (event) => {
   }
 });
 
-let scrollableList = countryCardContainer;
+// let scrollableList = countryCardContainer;
+
+const thresholdHeight = 340; //Threshold height
+
+const resizeObserver = new ResizeObserver((entries) => { 
+  // Toggle bottom gradient visibility based on command menu height
+  for (let entry of entries) {
+    const currentHeight = entry.contentRect.height;
+
+    if (currentHeight < thresholdHeight) {
+      // console.log('The command menu height is below 340px.');
+      bottomGradient.style.display = "none";
+    } else {
+      // console.log('The command menu height is above 340px.');
+      bottomGradient.style.display = "block";
+    }
+  }
+});
+
+resizeObserver.observe(commandMenu);
+
+function clearCards() {
+  // Clear all cards from the container
+  countryCardContainer.innerHTML = "";
+}
+
+function createCountryCard(country) {
+  // Create and append a new card element
+  const card = countryCardTemplate.content.cloneNode(true).children[0];
+  const header = card.querySelector("[data-header]");
+  const population = card.querySelector("[data-population]");
+  header.textContent = country.name;
+  population.textContent = country.population;
+  countryCardContainer.append(card);
+  return { name: country.name, element: card };
+}
+
+function getVisibleCards() {
+  // Get all visible (non-hidden) cards
+  return Array.from(document.querySelectorAll(".country-card:not(.hide)"));
+}
+
+function initializeCardNavigation() {
+  // Initialize card navigation with the first visible card
+  const visibleCards = getVisibleCards();
+  if (visibleCards.length > 0) {
+    currentIndex = 0;
+    updateHoverState(currentIndex);
+  }
+}
+
+function updateHoverState(newIndex) {
+  // Update the hover state of cards
+  const visibleCards = getVisibleCards();
+  if (visibleCards.length === 0) return;
+
+  visibleCards.forEach((card) => card.classList.remove("hover"));
+  currentIndex = newIndex;
+  visibleCards[currentIndex].classList.add("hover");
+  visibleCards[currentIndex].scrollIntoView({ block: "nearest" });
+}
+
+
+// Keyboard navigation event listener
+document.addEventListener("keydown", function (event) {
+  // Handle arrow key navigation and Enter key selection
+  const visibleCards = getVisibleCards();
+  if (visibleCards.length === 0) return;
+
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    let newIndex;
+    if (event.key === "ArrowDown") {
+      newIndex = (currentIndex + 1) % visibleCards.length;
+    } else if (event.key === "ArrowUp") {
+      newIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
+    }
+    updateHoverState(newIndex);
+    event.preventDefault(); // Prevent default scrolling behavior
+  } else if (event.key === "Enter") {
+    const hoveredCard = visibleCards[currentIndex];
+    if (hoveredCard) {
+      alert(
+        hoveredCard.querySelector("[data-header]").textContent +
+          " has a population of approximately " +
+          hoveredCard.querySelector("[data-population]").textContent +
+          " people"
+      );
+    }
+  }
+  searchInput.focus(); // Always focus on searchInput after any key press
+});
+
+
+document.addEventListener("mouseover", (event) => {
+  // Update hover state when mouse moves over a card
+  const cardElement = event.target.closest(".country-card:not(.hide)");
+  if (cardElement) {
+    const visibleCards = getVisibleCards();
+    const newIndex = visibleCards.indexOf(cardElement);
+    if (newIndex !== -1) {
+      updateHoverState(newIndex);
+    }
+  }
+});
 
 scrollableList.addEventListener("scroll", (event) => {
   let scrollTop = scrollableList.scrollTop;
@@ -108,107 +211,4 @@ button.addEventListener("click", (event) => {
   commandMenu.style.display = "block";
   button.style.display = "none";
   searchInput.focus();
-});
-
-const thresholdHeight = 340; //Threshold height
-
-const resizeObserver = new ResizeObserver((entries) => { 
-  // Toggle bottom gradient visibility based on command menu height
-  for (let entry of entries) {
-    const currentHeight = entry.contentRect.height;
-
-    if (currentHeight < thresholdHeight) {
-      // console.log('The command menu height is below 340px.');
-      bottomGradient.style.display = "none";
-    } else {
-      // console.log('The command menu height is above 340px.');
-      bottomGradient.style.display = "block";
-    }
-  }
-});
-
-resizeObserver.observe(commandMenu);
-
-
-function clearCards() {
-  // Clear all cards from the container
-  countryCardContainer.innerHTML = "";
-}
-
-function createCountryCard(country) {
-  // Create and append a new card element
-  const card = countryCardTemplate.content.cloneNode(true).children[0];
-  const header = card.querySelector("[data-header]");
-  const population = card.querySelector("[data-population]");
-  header.textContent = country.name;
-  population.textContent = country.population;
-  countryCardContainer.append(card);
-  return { name: country.name, element: card };
-}
-
-function getVisibleCards() {
-  // Get all visible (non-hidden) cards
-  return Array.from(document.querySelectorAll(".country-card:not(.hide)"));
-}
-
-function initializeCardNavigation() {
-  // Initialize card navigation with the first visible card
-  const visibleCards = getVisibleCards();
-  if (visibleCards.length > 0) {
-    currentIndex = 0;
-    updateHoverState(currentIndex);
-  }
-}
-
-function updateHoverState(newIndex) {
-  // Update the hover state of cards
-  const visibleCards = getVisibleCards();
-  if (visibleCards.length === 0) return;
-
-  visibleCards.forEach((card) => card.classList.remove("hover"));
-  currentIndex = newIndex;
-  visibleCards[currentIndex].classList.add("hover");
-  visibleCards[currentIndex].scrollIntoView({ block: "nearest" });
-}
-
-// Keyboard navigation event listener
-document.addEventListener("keydown", function (event) {
-  // Handle arrow key navigation and Enter key selection
-  const visibleCards = getVisibleCards();
-  if (visibleCards.length === 0) return;
-
-  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-    let newIndex;
-    if (event.key === "ArrowDown") {
-      newIndex = (currentIndex + 1) % visibleCards.length;
-    } else if (event.key === "ArrowUp") {
-      newIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
-    }
-    updateHoverState(newIndex);
-    event.preventDefault(); // Prevent default scrolling behavior
-  } else if (event.key === "Enter") {
-    const hoveredCard = visibleCards[currentIndex];
-    if (hoveredCard) {
-      alert(
-        hoveredCard.querySelector("[data-header]").textContent +
-          " has a population of approximately " +
-          hoveredCard.querySelector("[data-population]").textContent +
-          " people"
-      );
-    }
-  }
-  searchInput.focus(); // Always focus on searchInput after any key press
-});
-
-
-document.addEventListener("mouseover", (event) => {
-  // Update hover state when mouse moves over a card
-  const cardElement = event.target.closest(".country-card:not(.hide)");
-  if (cardElement) {
-    const visibleCards = getVisibleCards();
-    const newIndex = visibleCards.indexOf(cardElement);
-    if (newIndex !== -1) {
-      updateHoverState(newIndex);
-    }
-  }
 });
