@@ -115,7 +115,7 @@ main{
     display: block;
 }
 
-.card{
+.country-card{
     border-radius: 6px;
     padding: .6rem;
     cursor: pointer;
@@ -126,12 +126,12 @@ main{
     /*transition: all .2s ease-in-out; /*Optional */
 }
 
-.card .header{
+.country-card .header{
     font-size: .925rem;
     pointer-events: none;
 }
 
-.card .population{
+.country-card .population{
     display: none;
 }
 
@@ -139,7 +139,7 @@ main{
     background-color: #232323;
     color: #fff;
 }
-.user-cards{
+.country-cards{
     overflow-y: auto;
     max-height: 20rem;
     display: flex;
