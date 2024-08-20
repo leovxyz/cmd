@@ -1,42 +1,46 @@
 // Global variables and DOM element selections
-const userCardTemplate = document.querySelector("[data-user-template]")
-const userCardContainer = document.querySelector("[data-user-cards-container]")
-const searchInput = document.querySelector("[data-search]")
-const commandMenu = document.querySelector("[data-command-menu]")
-const bottomGradient = document.querySelector("[data-bottom-gradient]")
-const main = document.querySelector("main")
-const button = document.querySelector("[command-menu-button]")
-const card = document.querySelector(".card")
-let users = []
+const userCardTemplate = document.querySelector("[data-user-template]");
+const userCardContainer = document.querySelector("[data-user-cards-container]");
+const searchInput = document.querySelector("[data-search]");
+const commandMenu = document.querySelector("[data-command-menu]");
+const bottomGradient = document.querySelector("[data-bottom-gradient]");
+const main = document.querySelector("main");
+const button = document.querySelector("[command-menu-button]");
+const card = document.querySelector(".card");
+let users = [];
 let currentIndex = 0;
 
 // Search input event listener
-searchInput.addEventListener("input", e => {
+searchInput.addEventListener("input", (e) => {
   // Filter and display cards based on search input
-  const value = e.target.value.toLowerCase()
-  users.forEach(user => {
-    const isVisible =
-      user.name.toLowerCase().includes(value)
-    user.element.classList.toggle("hide", !isVisible)
-  })
+  const value = e.target.value.toLowerCase();
+  users.forEach((user) => {
+    const isVisible = user.name.toLowerCase().includes(value);
+    user.element.classList.toggle("hide", !isVisible);
+  });
   initializeCardNavigation(); // Reinitialize card navigation after filtering
-})
+});
 
 // Fetch data from API and create cards
 fetch("https://freetestapi.com/api/v1/countries")
-  .then(res => res.json()) 
-  .then(data => { 
+  .then((res) => res.json())
+  .then((data) => {
     clearCards(); // Clear existing cards before creating new ones
     users = data.map(createCard);
     initializeCardNavigation();
-  })
+  });
 
 // Card click event listener
 userCardContainer.addEventListener("click", (event) => {
   // Display alert with card information when clicked
   const clickedCard = event.target.closest("[data-card]");
   if (clickedCard) {
-    alert(clickedCard.querySelector("[data-header]").textContent + " has a population of approximately " + clickedCard.querySelector("[data-population]").textContent + " people")
+    alert(
+      clickedCard.querySelector("[data-header]").textContent +
+        " has a population of approximately " +
+        clickedCard.querySelector("[data-population]").textContent +
+        " people"
+    );
   }
 });
 
@@ -47,7 +51,10 @@ document.addEventListener("keydown", (event) => {
   if ((isMac ? event.metaKey : event.ctrlKey) && event.key === "k") {
     event.preventDefault();
     // Toggle command menu visibility
-    if (commandMenu.style.display === "none" || commandMenu.style.display === "") {
+    if (
+      commandMenu.style.display === "none" ||
+      commandMenu.style.display === ""
+    ) {
       commandMenu.style.display = "block";
       button.style.display = "none";
       searchInput.focus();
@@ -65,8 +72,7 @@ document.addEventListener("keydown", (event) => {
     button.style.display = "block";
     searchInput.focus();
   }
-  
-})
+});
 
 // Click event listener to hide command menu
 document.addEventListener("click", (event) => {
@@ -77,33 +83,32 @@ document.addEventListener("click", (event) => {
     button.style.display = "block";
     searchInput.focus();
   }
-})
+});
 
 // Button click event listener
 button.addEventListener("click", (event) => {
-    // Show command menu and focus on search input
-    commandMenu.style.display = "block";
-    button.style.display = "none";
-    searchInput.focus();
-})
+  // Show command menu and focus on search input
+  commandMenu.style.display = "block";
+  button.style.display = "none";
+  searchInput.focus();
+});
 
 // Resize observer for bottom gradient
 const thresholdHeight = 340; //Threshold height
 
-const resizeObserver = new ResizeObserver(entries => {
-    // Toggle bottom gradient visibility based on command menu height
-    for (let entry of entries) {
-        const currentHeight = entry.contentRect.height;
+const resizeObserver = new ResizeObserver((entries) => {
+  // Toggle bottom gradient visibility based on command menu height
+  for (let entry of entries) {
+    const currentHeight = entry.contentRect.height;
 
-        if (currentHeight < thresholdHeight) {
-            // console.log('The command menu height is below 340px.');
-            bottomGradient.style.display = "none";
-        }
-        else {
-            // console.log('The command menu height is above 340px.');
-            bottomGradient.style.display = "block";
-        }
+    if (currentHeight < thresholdHeight) {
+      // console.log('The command menu height is below 340px.');
+      bottomGradient.style.display = "none";
+    } else {
+      // console.log('The command menu height is above 340px.');
+      bottomGradient.style.display = "block";
     }
+  }
 });
 
 resizeObserver.observe(commandMenu);
@@ -111,23 +116,23 @@ resizeObserver.observe(commandMenu);
 // Helper functions
 function clearCards() {
   // Clear all cards from the container
-  userCardContainer.innerHTML = '';
+  userCardContainer.innerHTML = "";
 }
 
 function createCard(user) {
   // Create and append a new card element
-  const card = userCardTemplate.content.cloneNode(true).children[0]
-  const header = card.querySelector("[data-header]")
-  const population = card.querySelector("[data-population]")
-  header.textContent = user.name 
-  population.textContent = user.population
-  userCardContainer.append(card) 
-  return { name: user.name, element: card }
+  const card = userCardTemplate.content.cloneNode(true).children[0];
+  const header = card.querySelector("[data-header]");
+  const population = card.querySelector("[data-population]");
+  header.textContent = user.name;
+  population.textContent = user.population;
+  userCardContainer.append(card);
+  return { name: user.name, element: card };
 }
 
 function getVisibleCards() {
   // Get all visible (non-hidden) cards
-  return Array.from(document.querySelectorAll('.card:not(.hide)'));
+  return Array.from(document.querySelectorAll(".card:not(.hide)"));
 }
 
 function initializeCardNavigation() {
@@ -144,40 +149,45 @@ function updateHoverState(newIndex) {
   const visibleCards = getVisibleCards();
   if (visibleCards.length === 0) return;
 
-  visibleCards.forEach(card => card.classList.remove('hover'));
+  visibleCards.forEach((card) => card.classList.remove("hover"));
   currentIndex = newIndex;
-  visibleCards[currentIndex].classList.add('hover');
-  visibleCards[currentIndex].scrollIntoView({ block: 'nearest' });
+  visibleCards[currentIndex].classList.add("hover");
+  visibleCards[currentIndex].scrollIntoView({ block: "nearest" });
 }
 
 // Keyboard navigation event listener
-document.addEventListener('keydown', function(event) {
+document.addEventListener("keydown", function (event) {
   // Handle arrow key navigation and Enter key selection
   const visibleCards = getVisibleCards();
   if (visibleCards.length === 0) return;
 
-  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
     let newIndex;
-    if (event.key === 'ArrowDown') {
+    if (event.key === "ArrowDown") {
       newIndex = (currentIndex + 1) % visibleCards.length;
-    } else if (event.key === 'ArrowUp') {
+    } else if (event.key === "ArrowUp") {
       newIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
     }
     updateHoverState(newIndex);
     event.preventDefault(); // Prevent default scrolling behavior
-  } else if (event.key === 'Enter') {
+  } else if (event.key === "Enter") {
     const hoveredCard = visibleCards[currentIndex];
     if (hoveredCard) {
-      alert(hoveredCard.querySelector("[data-header]").textContent + " has a population of approximately " + hoveredCard.querySelector("[data-population]").textContent + " people");
+      alert(
+        hoveredCard.querySelector("[data-header]").textContent +
+          " has a population of approximately " +
+          hoveredCard.querySelector("[data-population]").textContent +
+          " people"
+      );
     }
   }
   searchInput.focus(); // Always focus on searchInput after any key press
 });
 
 // Mouse hover event listener
-document.addEventListener('mouseover', (event) => {
+document.addEventListener("mouseover", (event) => {
   // Update hover state when mouse moves over a card
-  const cardElement = event.target.closest('.card:not(.hide)');
+  const cardElement = event.target.closest(".card:not(.hide)");
   if (cardElement) {
     const visibleCards = getVisibleCards();
     const newIndex = visibleCards.indexOf(cardElement);
