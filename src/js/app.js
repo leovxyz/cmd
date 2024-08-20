@@ -1,22 +1,22 @@
 // Global variables and DOM element selections
-const userCardTemplate = document.querySelector("[data-user-template]");
-const userCardContainer = document.querySelector("[data-user-cards-container]");
+const countryCardTemplate = document.querySelector("[data-country-template]");
+const countryCardContainer = document.querySelector("[data-country-cards-container]");
 const searchInput = document.querySelector("[data-search]");
 const commandMenu = document.querySelector("[data-command-menu]");
 const bottomGradient = document.querySelector("[data-bottom-gradient]");
 const main = document.querySelector("main");
 const button = document.querySelector("[command-menu-button]");
-const card = document.querySelector(".card");
-let users = [];
+const card = document.querySelector(".country-card");
+let countries = [];
 let currentIndex = 0;
 
 // Search input event listener
 searchInput.addEventListener("input", (e) => {
   // Filter and display cards based on search input
   const value = e.target.value.toLowerCase();
-  users.forEach((user) => {
-    const isVisible = user.name.toLowerCase().includes(value);
-    user.element.classList.toggle("hide", !isVisible);
+  countries.forEach((country) => {
+    const isVisible = country.name.toLowerCase().includes(value);
+    country.element.classList.toggle("hide", !isVisible);
   });
   initializeCardNavigation(); // Reinitialize card navigation after filtering
 });
@@ -26,12 +26,12 @@ fetch("https://freetestapi.com/api/v1/countries")
   .then((res) => res.json())
   .then((data) => {
     clearCards(); // Clear existing cards before creating new ones
-    users = data.map(createCard);
+    countries = data.map(createCountryCard);
     initializeCardNavigation();
   });
 
 // Card click event listener
-userCardContainer.addEventListener("click", (event) => {
+countryCardContainer.addEventListener("click", (event) => {
   // Display alert with card information when clicked
   const clickedCard = event.target.closest("[data-card]");
   if (clickedCard) {
@@ -116,23 +116,23 @@ resizeObserver.observe(commandMenu);
 // Helper functions
 function clearCards() {
   // Clear all cards from the container
-  userCardContainer.innerHTML = "";
+  countryCardContainer.innerHTML = "";
 }
 
-function createCard(user) {
+function createCountryCard(country) {
   // Create and append a new card element
-  const card = userCardTemplate.content.cloneNode(true).children[0];
+  const card = countryCardTemplate.content.cloneNode(true).children[0];
   const header = card.querySelector("[data-header]");
   const population = card.querySelector("[data-population]");
-  header.textContent = user.name;
-  population.textContent = user.population;
-  userCardContainer.append(card);
-  return { name: user.name, element: card };
+  header.textContent = country.name;
+  population.textContent = country.population;
+  countryCardContainer.append(card);
+  return { name: country.name, element: card };
 }
 
 function getVisibleCards() {
   // Get all visible (non-hidden) cards
-  return Array.from(document.querySelectorAll(".card:not(.hide)"));
+  return Array.from(document.querySelectorAll(".country-card:not(.hide)"));
 }
 
 function initializeCardNavigation() {
@@ -187,7 +187,7 @@ document.addEventListener("keydown", function (event) {
 // Mouse hover event listener
 document.addEventListener("mouseover", (event) => {
   // Update hover state when mouse moves over a card
-  const cardElement = event.target.closest(".card:not(.hide)");
+  const cardElement = event.target.closest(".country-card:not(.hide)");
   if (cardElement) {
     const visibleCards = getVisibleCards();
     const newIndex = visibleCards.indexOf(cardElement);
