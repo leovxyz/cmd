@@ -32,21 +32,6 @@ fetch("https://freetestapi.com/api/v1/countries")
     initializeCardNavigation();
   });
 
-// Card click event listener
-countryCardContainer.addEventListener("click", (event) => {
-  // Display alert with card information when clicked
-  const clickedCard = event.target.closest("[data-card]");
-  if (clickedCard) {
-    alert(
-      clickedCard.querySelector("[data-header]").textContent +
-        " has a population of approximately " +
-        clickedCard.querySelector("[data-population]").textContent +
-        " people"
-    );
-  }
-});
-
-
 
 const resizeObserver = new ResizeObserver((entries) => { 
   // Toggle bottom gradient visibility based on command menu height
@@ -107,6 +92,21 @@ function updateHoverState(newIndex) {
   visibleCards[currentIndex].scrollIntoView({ block: "nearest" });
 }
 
+
+
+// Card click event listener
+countryCardContainer.addEventListener("click", (event) => {
+  // Display alert with card information when clicked
+  const clickedCard = event.target.closest("[data-card]");
+  if (clickedCard) {
+    alert(
+      clickedCard.querySelector("[data-header]").textContent +
+        " has a population of approximately " +
+        clickedCard.querySelector("[data-population]").textContent +
+        " people"
+    );
+  }
+});
 
 // Keyboard navigation event listener
 document.addEventListener("keydown", function (event) {
