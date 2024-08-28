@@ -20,7 +20,7 @@ A dynamic command menu featuring 199 countries fetched from the Free Test Countr
 - Built with vanilla JavaScript, HTML, and CSS
 - Utilizes the Fetch API for data retrieval
 - Implements custom keyboard navigation and event handling
-- Uses a template for efficient country card creation
+- Uses a template for efficient card creation in the DOM
 
 ## Usage
 
