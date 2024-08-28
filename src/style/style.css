@@ -107,6 +107,7 @@ main{
     margin-top: 3.2rem;
     height: 100%;
     padding: .65rem;
+    padding-bottom: 0px;
 }
 
 .lower .gradient{
