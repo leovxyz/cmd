@@ -21,6 +21,7 @@ A dynamic command menu featuring 199 countries fetched from the Free Test Countr
 - Utilizes the Fetch API for data retrieval
 - Implements custom keyboard navigation and event handling
 - Uses a template for efficient card creation in the DOM
+- Employs ResizeObserver for efficient UI updates
 
 ## Usage
 
@@ -29,6 +30,11 @@ A dynamic command menu featuring 199 countries fetched from the Free Test Countr
 3. Type to search for countries in real-time
 4. Use arrow keys to navigate through the list
 5. Press Enter or click on a country to view its details
+
+## Performance Optimization
+
+- Implements efficient DOM updates to minimize repaints and reflows
+- Uses ResizeObserver for responsive UI adjustments
 
 ## License
 
