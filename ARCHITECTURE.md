@@ -25,8 +25,40 @@ The Command Menu is a component featuring a dynamic search interface for interac
    - Supports keyboard shortcuts for opening/closing the command menu
    - Ensures a consistent user experience across devices
 
+5. **Responsive Design**
+   - Implements a responsive layout that adapts to various screen sizes
+   - Uses media queries to adjust styles for different devices
+
 6. **Performance Optimization**
    - Uses `ResizeObserver` for efficient UI updates
    - Implements efficient DOM updates to minimize repaints and reflows
 
+## Component Structure
 
+1. **Command Menu Button**
+   - Toggles the visibility of the command menu
+   - Responds to click events and keyboard shortcuts
+
+2. **Search Input**
+   - Captures user input for real-time filtering
+   - Triggers search functionality on input change
+
+3. **Results List**
+   - Dynamically populated with filtered country cards
+   - Supports keyboard navigation and selection
+
+4. **Country Card Template**
+   - Reusable HTML structure for displaying country information
+   - Efficiently cloned and populated for each result
+
+## Event Handling
+
+- Keyboard events for shortcuts and navigation
+- Click events for selection and closing the menu
+- Input events for real-time search
+
+## Future Enhancements
+
+- Implement caching mechanisms for improved performance
+- Add sorting options for search results
+- Integrate with more diverse data sources
