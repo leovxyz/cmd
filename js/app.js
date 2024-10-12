@@ -24,13 +24,22 @@ searchInput.addEventListener("input", (e) => {
 });
 
 // Fetch data from API and create cards
-fetch("https://freetestapi.com/api/v1/countries")
+const API_URL = "https://restcountries.com/v3.1/all";
+
+fetch(API_URL)
   .then((res) => res.json())
   .then((data) => {
-    clearCards(); // Clear existing cards before creating new ones
-    countries = data.map(createCountryCard);
+    console.log("API data received:", data);
+    clearCards();
+    countries = data.map(country => createCountryCard({
+      name: country.name.common,
+      population: country.population
+    }));
     initializeCardNavigation();
-  });
+  })
+  .catch(error => console.error("Error fetching data:", error));
+
+
 
 
 
@@ -157,7 +166,7 @@ scrollableList.addEventListener("scroll", (event) => {
   // Calculate the percentage of the scroll ( current position / total scrollable content)
   let scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
 
-  // 99.9 is the absoulute bottom of the scrollable list, so we want to hide the gradient when we get close to the bottom.
+  // 99.9 is the absoulte bottom of the scrollable list, so we want to hide the gradient when we get close to the bottom.
   if (scrollPercent >= 99) {
     bottomGradient.style.display = "none";
   } else {
