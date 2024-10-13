@@ -100,20 +100,17 @@ function updateHoverState(newIndex) {
 
 // Card click event listener
 countryCardContainer.addEventListener("click", (event) => {
-  // Display alert with card information when clicked
   const clickedCard = event.target.closest("[data-country-card]");
   if (clickedCard) {
-    event.preventDefault(); // Prevent default behavior
+    event.preventDefault();
     const header = clickedCard.querySelector("[data-header]").textContent;
     const population = clickedCard.querySelector("[data-population]").textContent;
-    // Use a custom modal instead of alert
     showCustomModal(header, population);
   }
 });
 
 // Keyboard navigation event listener
 document.addEventListener("keydown", function (event) {
-  // Handle arrow key navigation and Enter key selection
   const visibleCards = getVisibleCards();
   if (visibleCards.length === 0) return;
 
@@ -125,56 +122,20 @@ document.addEventListener("keydown", function (event) {
       newIndex = (currentIndex - 1 + visibleCards.length) % visibleCards.length;
     }
     updateHoverState(newIndex);
-    event.preventDefault(); // Prevent default scrolling behavior
+    event.preventDefault();
   } else if (event.key === "Enter") {
     const hoveredCard = visibleCards[currentIndex];
     if (hoveredCard) {
-      event.preventDefault(); // Prevent default behavior
+      event.preventDefault();
       const header = hoveredCard.querySelector("[data-header]").textContent;
       const population = hoveredCard.querySelector("[data-population]").textContent;
-      // Use a custom modal instead of alert
       showCustomModal(header, population);
     }
   }
 });
 
-// Custom modal function
-function showCustomModal(header, population) {
-  const modal = document.createElement('div');
-  modal.style.position = 'fixed';
-  modal.style.left = '50%';
-  modal.style.top = '50%';
-  modal.style.transform = 'translate(-50%, -50%)';
-  modal.style.backgroundColor = '#131316';
-  modal.style.color = '#9394A1';
-  modal.style.padding = '20px';
-  modal.style.borderRadius = '8px';
-  modal.style.border = '1px solid #28292F';
-  modal.style.boxShadow = '0px 0px 30px 10px #11111166';
-  modal.style.zIndex = '1000';
-  modal.style.fontFamily = "'Inter', sans-serif";
-  modal.style.width = 'clamp(300px, 90%, 400px)';
-  modal.innerHTML = `
-    <p style="margin-bottom: 15px; color: #D9D9DE;">${header} has a population of approximately ${population} people</p>
-    <button id="closeModal" style="background-color: #1D1D21; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif;">Close</button>
-  `;
-  document.body.appendChild(modal);
-
-  const closeButton = modal.querySelector('#closeModal');
-  closeButton.addEventListener('click', () => {
-    document.body.removeChild(modal);
-    searchInput.focus();
-  });
-  closeButton.addEventListener('mouseover', () => {
-    closeButton.style.backgroundColor = '#28292F';
-  });
-  closeButton.addEventListener('mouseout', () => {
-    closeButton.style.backgroundColor = '#1D1D21';
-  });
-
-  // Keep the search input focused
-  searchInput.focus();
-}
+// Remove the showCustomModal function as it's no longer needed
+// function showCustomModal(header, population) { ... }
 
 document.addEventListener("mouseover", (event) => {
   // Update hover state when mouse moves over a card
@@ -210,26 +171,23 @@ document.addEventListener("keydown", (event) => {
   if ((isMac ? event.metaKey : event.ctrlKey) && event.key === "k") {
     event.preventDefault();
     // Toggle command menu visibility
-    if (
-      commandMenu.style.display === "none" ||
-      commandMenu.style.display === ""
-    ) {
+    if (commandMenu.style.display === "none" || commandMenu.style.display === "") {
       commandMenu.style.display = "block";
       button.style.display = "none";
-      searchInput.focus();
     } else {
+      commandMenu.style.display = "none";
+      button.style.display = "block";
+    }
+    searchInput.value = ""; // Clear search input when toggling
+    searchInput.focus(); // Always focus on searchInput
+  } else if (event.key === "Escape" && !activeModal) {
+    // Hide command menu on Escape key press only if no modal is active
+    if (commandMenu.style.display === "block") {
       commandMenu.style.display = "none";
       searchInput.value = "";
       button.style.display = "block";
+      searchInput.focus();
     }
-    searchInput.focus(); // Always focus on searchInput
-  }
-  if (event.key === "Escape") {
-    // Hide command menu on Escape key press
-    commandMenu.style.display = "none";
-    searchInput.value = "";
-    button.style.display = "block";
-    searchInput.focus();
   }
 });
 
@@ -250,5 +208,71 @@ button.addEventListener("click", (event) => {
   searchInput.focus();
 });
 
-// Always keep the search input focused
-setInterval(() => searchInput.focus(), 100);
+// Custom modal function
+let activeModal = null;
+
+function showCustomModal(header, population) {
+  if (activeModal) return; // Prevent creating multiple modals
+
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  overlay.style.zIndex = '999';
+
+  const modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.left = '50%';
+  modal.style.top = '50%';
+  modal.style.transform = 'translate(-50%, -50%)';
+  modal.style.backgroundColor = '#131316';
+  modal.style.color = '#9394A1';
+  modal.style.padding = '20px';
+  modal.style.borderRadius = '8px';
+  modal.style.border = '1px solid #28292F';
+  modal.style.boxShadow = '0px 0px 30px 10px #11111166';
+  modal.style.zIndex = '1000';
+  modal.style.fontFamily = "'Inter', sans-serif";
+  modal.style.width = 'clamp(300px, 90%, 400px)';
+  modal.innerHTML = `
+    <p style="margin-bottom: 15px; color: #D9D9DE;">${header} has a population of approximately ${population} people</p>
+    <button id="closeModal" style="background-color: #1D1D21; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif;">Close <span style="font-size: 0.8em; opacity: 0.7;">(Esc)</span></button>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.appendChild(modal);
+  activeModal = { modal, overlay };
+
+  const closeButton = modal.querySelector('#closeModal');
+  closeButton.addEventListener('click', closeModal);
+  closeButton.addEventListener('mouseover', () => {
+    closeButton.style.backgroundColor = '#28292F';
+  });
+  closeButton.addEventListener('mouseout', () => {
+    closeButton.style.backgroundColor = '#1D1D21';
+  });
+
+  overlay.addEventListener('click', closeModal);
+
+  const modalEscapeHandler = (e) => {
+    if (e.key === 'Escape') {
+      closeModal();
+      e.preventDefault();
+    }
+  };
+
+  document.addEventListener('keydown', modalEscapeHandler);
+
+  function closeModal() {
+    if (!activeModal) return;
+    
+    document.body.removeChild(activeModal.modal);
+    document.body.removeChild(activeModal.overlay);
+    document.removeEventListener('keydown', modalEscapeHandler);
+    activeModal = null;
+    searchInput.focus();
+  }
+}
