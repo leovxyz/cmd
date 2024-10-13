@@ -239,7 +239,7 @@ function showCustomModal(header, population) {
   modal.style.width = 'clamp(300px, 90%, 400px)';
   modal.innerHTML = `
     <p style="margin-bottom: 15px; color: #D9D9DE;">${header} has a population of approximately ${population} people</p>
-    <button id="closeModal" style="background-color: #1D1D21; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif;">Close <span style="font-size: 0.8em; opacity: 0.7;">(Esc)</span></button>
+    <button id="closeModal" style="background-color: #28292F; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif;">Close<span style="font-size: 0.8em; opacity: 0.7; background-color: #35363D; padding: 2px 4px; border-radius: 4px; margin-left: 4px;">Esc</span></button>
   `;
 
   document.body.appendChild(overlay);
