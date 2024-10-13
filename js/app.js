@@ -24,15 +24,20 @@ searchInput.addEventListener("input", (e) => {
 });
 
 // Fetch data from API and create cards
-fetch("https://freetestapi.com/api/v1/countries")
+fetch("https://restcountries.com/v3.1/all")
   .then((res) => res.json())
   .then((data) => {
     clearCards(); // Clear existing cards before creating new ones
-    countries = data.map(createCountryCard);
+    countries = data.map(country => ({
+      name: country.name.common,
+      population: country.population
+    })).map(createCountryCard);
     initializeCardNavigation();
+  })
+  .catch(error => {
+    console.error("Error fetching country data:", error);
+    // Optionally, display an error message to the user
   });
-
-
 
 const resizeObserver = new ResizeObserver((entries) => { 
   // Toggle bottom gradient visibility based on command menu height
@@ -63,7 +68,7 @@ function createCountryCard(country) {
   const header = card.querySelector("[data-header]");
   const population = card.querySelector("[data-population]");
   header.textContent = country.name;
-  population.textContent = country.population;
+  population.textContent = country.population.toLocaleString(); // Format population number
   countryCardContainer.append(card);
   return { name: country.name, element: card };
 }
@@ -98,12 +103,11 @@ countryCardContainer.addEventListener("click", (event) => {
   // Display alert with card information when clicked
   const clickedCard = event.target.closest("[data-country-card]");
   if (clickedCard) {
-    alert(
-      clickedCard.querySelector("[data-header]").textContent +
-        " has a population of approximately " +
-        clickedCard.querySelector("[data-population]").textContent +
-        " people"
-    );
+    event.preventDefault(); // Prevent default behavior
+    const header = clickedCard.querySelector("[data-header]").textContent;
+    const population = clickedCard.querySelector("[data-population]").textContent;
+    // Use a custom modal instead of alert
+    showCustomModal(header, population);
   }
 });
 
@@ -125,17 +129,52 @@ document.addEventListener("keydown", function (event) {
   } else if (event.key === "Enter") {
     const hoveredCard = visibleCards[currentIndex];
     if (hoveredCard) {
-      alert(
-        hoveredCard.querySelector("[data-header]").textContent +
-          " has a population of approximately " +
-          hoveredCard.querySelector("[data-population]").textContent +
-          " people"
-      );
+      event.preventDefault(); // Prevent default behavior
+      const header = hoveredCard.querySelector("[data-header]").textContent;
+      const population = hoveredCard.querySelector("[data-population]").textContent;
+      // Use a custom modal instead of alert
+      showCustomModal(header, population);
     }
   }
-  searchInput.focus(); // Always focus on searchInput after any key press
 });
 
+// Custom modal function
+function showCustomModal(header, population) {
+  const modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.left = '50%';
+  modal.style.top = '50%';
+  modal.style.transform = 'translate(-50%, -50%)';
+  modal.style.backgroundColor = '#131316';
+  modal.style.color = '#9394A1';
+  modal.style.padding = '20px';
+  modal.style.borderRadius = '8px';
+  modal.style.border = '1px solid #28292F';
+  modal.style.boxShadow = '0px 0px 30px 10px #11111166';
+  modal.style.zIndex = '1000';
+  modal.style.fontFamily = "'Inter', sans-serif";
+  modal.style.width = 'clamp(300px, 90%, 400px)';
+  modal.innerHTML = `
+    <p style="margin-bottom: 15px; color: #D9D9DE;">${header} has a population of approximately ${population} people</p>
+    <button id="closeModal" style="background-color: #1D1D21; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-family: 'Inter', sans-serif;">Close</button>
+  `;
+  document.body.appendChild(modal);
+
+  const closeButton = modal.querySelector('#closeModal');
+  closeButton.addEventListener('click', () => {
+    document.body.removeChild(modal);
+    searchInput.focus();
+  });
+  closeButton.addEventListener('mouseover', () => {
+    closeButton.style.backgroundColor = '#28292F';
+  });
+  closeButton.addEventListener('mouseout', () => {
+    closeButton.style.backgroundColor = '#1D1D21';
+  });
+
+  // Keep the search input focused
+  searchInput.focus();
+}
 
 document.addEventListener("mouseover", (event) => {
   // Update hover state when mouse moves over a card
@@ -157,7 +196,7 @@ scrollableList.addEventListener("scroll", (event) => {
   // Calculate the percentage of the scroll ( current position / total scrollable content)
   let scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
 
-  // 99.9 is the absoulute bottom of the scrollable list, so we want to hide the gradient when we get close to the bottom.
+  // 99.9 is the absoulte bottom of the scrollable list, so we want to hide the gradient when we get close to the bottom.
   if (scrollPercent >= 99) {
     bottomGradient.style.display = "none";
   } else {
@@ -210,3 +249,6 @@ button.addEventListener("click", (event) => {
   button.style.display = "none";
   searchInput.focus();
 });
+
+// Always keep the search input focused
+setInterval(() => searchInput.focus(), 100);
