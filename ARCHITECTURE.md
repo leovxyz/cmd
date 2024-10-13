@@ -4,12 +4,12 @@ This document outlines the architecture of the Command Menu project, built with 
 
 ## Overview
 
-The Command Menu is a component featuring a dynamic search interface for interacting with a list of items from an external API.
+The Command Menu is a component featuring a dynamic search interface for interacting with a list of countries fetched from the REST Countries API.
 
 ## Core Functionalities
 
 1. **Data Fetching**
-   - Utilizes the Fetch API to retrieve country data from an external API
+   - Utilizes the Fetch API to retrieve country data from the REST Countries API
    - Implements error handling and data processing
 
 2. **Dynamic Content Generation**
@@ -33,6 +33,10 @@ The Command Menu is a component featuring a dynamic search interface for interac
    - Uses `ResizeObserver` for efficient UI updates
    - Implements efficient DOM updates to minimize repaints and reflows
 
+7. **Custom Modal**
+   - Displays detailed country information in a custom-styled modal
+   - Implements modal closing functionality via button click, overlay click, or Escape key
+
 ## Component Structure
 
 1. **Command Menu Button**
@@ -51,14 +55,31 @@ The Command Menu is a component featuring a dynamic search interface for interac
    - Reusable HTML structure for displaying country information
    - Efficiently cloned and populated for each result
 
+5. **Custom Modal**
+   - Displays detailed country information
+   - Implements close functionality and styling
+
 ## Event Handling
 
-- Keyboard events for shortcuts and navigation
-- Click events for selection and closing the menu
+- Keyboard events for shortcuts, navigation, and modal interaction
+- Click events for selection, closing the menu, and modal interaction
 - Input events for real-time search
+- Scroll events for managing bottom gradient visibility
+
+## Performance Considerations
+
+- Efficient DOM updates to minimize repaints and reflows
+- Use of `ResizeObserver` for responsive UI adjustments
+- Event delegation for improved performance
+
+## Accessibility
+
+- Keyboard navigation support throughout the application
+- Visual feedback for hovered and selected items
 
 ## Future Enhancements
 
 - Implement caching mechanisms for improved performance
 - Add sorting options for search results
 - Integrate with more diverse data sources
+- Implement lazy loading for large datasets

@@ -1,10 +1,10 @@
 # Command Menu
 
-A dynamic command menu featuring 199 countries fetched from the Free Test Country API. This project demonstrates a responsive and interactive user interface with real-time search functionality and keyboard navigation.
+A dynamic command menu featuring countries fetched from the REST Countries API. This project demonstrates a responsive and interactive user interface with real-time search functionality and keyboard navigation.
 
 ## Features
 
-- Fetches 199 countries from [Free Test Country API](https://freetestapi.com/api/v1/countries)
+- Fetches countries from [REST Countries API](https://restcountries.com/v3.1/all)
 - Real-time search filtering of countries
 - Keyboard shortcuts:
   - Ctrl+K (Windows) or Cmd+K (Mac) to toggle the command menu
@@ -13,7 +13,7 @@ A dynamic command menu featuring 199 countries fetched from the Free Test Countr
   - Enter to select a country
 - Click outside the menu to close it
 - Responsive design for various screen sizes
-- Displays country name and population in an alert box when selected
+- Displays country name and population in a custom modal when selected
 
 ## Technical Details
 
@@ -29,12 +29,24 @@ A dynamic command menu featuring 199 countries fetched from the Free Test Countr
 2. Click the "⌘K" button or use the keyboard shortcut to open the command menu
 3. Type to search for countries in real-time
 4. Use arrow keys to navigate through the list
-5. Press Enter or click on a country to view its details
+5. Press Enter or click on a country to view its details in a custom modal
 
 ## Performance Optimization
 
 - Implements efficient DOM updates to minimize repaints and reflows
 - Uses ResizeObserver for responsive UI adjustments
+- Employs event delegation for improved performance
+
+## Custom Modal
+
+- Displays country information in a custom-styled modal
+- Closes on button click, overlay click, or Escape key press
+- Ensures only one modal is active at a time
+
+## Accessibility
+
+- Keyboard navigation support throughout the application
+- Visual feedback for hovered and selected items
 
 ## License
 
