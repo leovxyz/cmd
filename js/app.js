@@ -57,6 +57,8 @@ const resizeObserver = new ResizeObserver((entries) => {
 
 resizeObserver.observe(commandMenu);
 
+
+
 function clearCards() {
   // Clear all cards from the container
   countryCardContainer.innerHTML = "";
